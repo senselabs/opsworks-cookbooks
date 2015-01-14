@@ -4,7 +4,7 @@ define :nginx_web_app, :template => "site.erb", :enable => true do
   application = params[:application]
   application_name = application[:name]
 
-  unless application.has_key?[:sidekiq]
+  unless application.has_key?(:sidekiq)
     template "#{node[:nginx][:dir]}/sites-available/#{application_name}" do
       Chef::Log.debug("Generating Nginx site template for #{application_name.inspect}")
       source params[:template]
