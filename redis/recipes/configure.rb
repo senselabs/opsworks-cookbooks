@@ -13,7 +13,5 @@ template "setup redis.conf" do
 end
 
 service "redis-server" do
-	provider Chef::Provider::Service::Upstart
-	supports :status => true, :restart => true, :reload => true
 	action :restart
 end
