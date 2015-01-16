@@ -16,7 +16,6 @@ bash "install_redis" do
 		tar -zxf #{redis_conf[:package]}.tar.gz
 		(cd #{redis_conf[:package]}/ && make && make install)
 	EOH
-	action :nothing
 end
 
 template "setup redis-server" do
