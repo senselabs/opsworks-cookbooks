@@ -30,9 +30,9 @@ case "$1" in
 	echo -n "Starting $DESC: "
 	mkdir -p $RUNDIR
 	touch $PIDFILE
-	chown redis:redis $RUNDIR $PIDFILE
+	chown deploy:www-data $RUNDIR $PIDFILE
 	chmod 755 $RUNDIR
-	if start-stop-daemon --start --quiet --umask 007 --pidfile $PIDFILE --chuid redis:redis --exec $DAEMON -- $DAEMON_ARGS
+	if start-stop-daemon --start --quiet --umask 007 --pidfile $PIDFILE --chuid deploy:www-data --exec $DAEMON -- $DAEMON_ARGS
 	then
 		echo "$NAME."
 	else
