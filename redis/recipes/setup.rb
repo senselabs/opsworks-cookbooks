@@ -25,6 +25,20 @@ directory "/etc/redis" do
 	action :create
 end
 
+directory "/var/log/redis" do
+	owner "deploy"
+	group "www-data"
+	mode 0755
+	action :create
+end
+
+directory "/var/lib/redis" do
+	owner "deploy"
+	group "www-data"
+	mode 0755
+	action :create
+end
+
 template "setup redis-server" do
 	path "/etc/init.d/redis-server"
 	source "redis-server.erb"
