@@ -18,6 +18,13 @@ bash "install_redis" do
 	EOH
 end
 
+directory "/etc/redis" do
+	owner "root"
+	group "root"
+	mode 0755
+	action :create
+end
+
 template "setup redis-server" do
 	path "/etc/init.d/redis-server"
 	source "redis-server.erb"
