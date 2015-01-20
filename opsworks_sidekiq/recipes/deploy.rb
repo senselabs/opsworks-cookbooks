@@ -12,6 +12,7 @@ node[:deploy].each do |application, deploy|
       variables(
         env: OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables])
         )
+      not_if { deploy[:environment_variables] == {} or deploy[:environment_variables] == nil }
     end
 
     link "#{deploy[:deploy_to]}/current/config/application.yml" do
