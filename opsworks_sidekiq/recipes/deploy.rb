@@ -14,6 +14,10 @@ node[:deploy].each do |application, deploy|
         )
     end
 
+    link "#{deploy[:deploy_to]}/current/config/application.yml" do
+      to "#{deploy[:deploy_to]}/shared/config/application.yml"
+    end
+
     template "setup sidekiq.conf" do
       path "/etc/init/sidekiq-#{application}.conf"
       source "sidekiq.conf.erb"
