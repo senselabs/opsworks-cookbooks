@@ -4,6 +4,21 @@ node[:deploy].each do |application, deploy|
     sidekiq_env = deploy['sidekiq']['rails_env'] || 'production'
     require_path = ::File.expand_path(deploy['sidekiq']['require'] || '.', release_path)
 
+    template "#{deploy[:deploy_to]}/shared/config/application.yml" do
+      mode 0644
+      owner deploy[:user]
+      group deploy[:group]
+      source "application.yml.erb"
+      variables(
+        env: OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables])
+        )
+      not_if { deploy[:environment_variables] == {} or deploy[:environment_variables] == nil }
+    end
+
+    link "#{deploy[:deploy_to]}/current/config/application.yml" do
+      to "#{deploy[:deploy_to]}/shared/config/application.yml"
+    end
+
     template "setup sidekiq.conf" do
       path "/etc/init/sidekiq-#{application}.conf"
       source "sidekiq.conf.erb"
