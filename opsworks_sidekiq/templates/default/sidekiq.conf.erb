@@ -30,5 +30,5 @@ normal exit 0 TERM USR1
 chdir "<%= @release_path %>"
 
 script
-  exec bundle exec sidekiq -e <%= @sidekiq_env %> -C config/sidekiq.yml -r "<%= @require_path %>"
+  exec bundle exec sidekiq -e <%= @sidekiq_env %> -C config/sidekiq.yml -r "<%= @require_path %>" -L log/sidekiq.log
 end script
