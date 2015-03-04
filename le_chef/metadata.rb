@@ -13,6 +13,5 @@ supports 'ubuntu'
 supports 'rhel'
 
 depends 'apt'
-depends 'yum'
 
 suggests 'java', '~> 1.22'
