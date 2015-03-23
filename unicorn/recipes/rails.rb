@@ -81,6 +81,13 @@ node[:deploy].each do |application, deploy|
       })
     end
 
+    bash 'precompile_rails_assets' do
+      cwd "#{deploy[:deploy_to]}/current"
+      user deploy[:user]
+      group deploy[:group]
+      code "bundle exec rake assets:precompile"
+    end
+
     service "puma-#{application}" do
       provider Chef::Provider::Service::Upstart
       supports stop: true, start: true, restart: true, status: true
