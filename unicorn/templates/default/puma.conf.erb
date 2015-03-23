@@ -1,0 +1,20 @@
+description "Puma Brainbank server"
+
+# no "start on", we don't want to automatically start
+stop on (stopping workers or runlevel [06])
+
+# change to match your deployment user
+setuid <%= @user %>
+setgid <%= @group %>
+
+respawn
+respawn limit 3 30
+
+# TERM and USR1 are sent by sidekiqctl when stopping sidekiq.  Without declaring these as normal exit codes, it just respawns.
+normal exit 0 TERM USR1
+
+chdir "<%= @release_path %>"
+
+script
+  exec bundle exec puma -e production
+end script
