@@ -84,8 +84,11 @@ node[:deploy].each do |application, deploy|
     bash 'precompile_rails_assets' do
       cwd release_path
       user deploy[:user]
+      group deploy[:group]
       code <<-EOH
-        RAILS_ENV=production bundle exec rake assets:precompile > ~/compile.log
+        ls -R > /home/deploy/before.log
+        RAILS_ENV=production bundle exec rake assets:precompile
+        ls -R > /home/deploy/after.log
       EOH
     end
 
