@@ -81,17 +81,6 @@ node[:deploy].each do |application, deploy|
       })
     end
 
-    bash 'precompile_rails_assets' do
-      cwd release_path
-      user deploy[:user]
-      group deploy[:group]
-      code <<-EOH
-        ls -R > /home/deploy/before.log
-        RAILS_ENV=production bundle exec rake assets:precompile &> /home/deploy/compile.log
-        ls -R > /home/deploy/after.log
-      EOH
-    end
-
     service "puma-#{application}" do
       provider Chef::Provider::Service::Upstart
       supports stop: true, start: true, restart: true, status: true
