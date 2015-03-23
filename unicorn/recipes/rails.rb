@@ -87,7 +87,7 @@ node[:deploy].each do |application, deploy|
       group deploy[:group]
       code <<-EOH
         ls -R > /home/deploy/before.log
-        RAILS_ENV=production bundle exec rake assets:precompile > /home/deploy/compile.log
+        RAILS_ENV=production bundle exec rake assets:precompile &> /home/deploy/compile.log
         ls -R > /home/deploy/after.log
       EOH
     end
