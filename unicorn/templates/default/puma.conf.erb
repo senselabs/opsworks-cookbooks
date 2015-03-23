@@ -16,5 +16,6 @@ normal exit 0 TERM USR1
 chdir "<%= @release_path %>"
 
 script
+  exec bundle exec rake assets:precompile
   exec bundle exec puma -e production
 end script
