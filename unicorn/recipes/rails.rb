@@ -82,10 +82,11 @@ node[:deploy].each do |application, deploy|
     end
 
     bash 'precompile_rails_assets' do
-      cwd "#{deploy[:deploy_to]}/current"
+      cwd release_path
       user deploy[:user]
-      group deploy[:group]
-      code "bundle exec rake assets:precompile"
+      code <<-EOH
+        RAILS_ENV=production bundle exec rake assets:precompile > ~/compile.log
+      EOH
     end
 
     service "puma-#{application}" do
