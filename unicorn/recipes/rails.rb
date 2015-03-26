@@ -53,21 +53,6 @@ node[:deploy].each do |application, deploy|
   else
     release_path = ::File.join(deploy[:deploy_to], 'current')
 
-    template "#{deploy[:deploy_to]}/shared/config/application.yml" do
-      mode 0644
-      owner deploy[:user]
-      group deploy[:group]
-      source "application.yml.erb"
-      variables(
-        env: OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables])
-        )
-      not_if { deploy[:environment_variables] == {} or deploy[:environment_variables] == nil }
-    end
-
-    link "#{deploy[:deploy_to]}/current/config/application.yml" do
-      to "#{deploy[:deploy_to]}/shared/config/application.yml"
-    end
-
     template "setup puma.conf" do
       path "/etc/init/puma-#{application}.conf"
       source "puma.conf.erb"
