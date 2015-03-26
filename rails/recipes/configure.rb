@@ -44,4 +44,17 @@ node[:deploy].each do |application, deploy|
       deploy[:memcached][:host].present? && File.directory?("#{deploy[:deploy_to]}/shared/config/")
     end
   end
+
+  if deploy.has_key?(:puma)
+    template "#{deploy[:deploy_to]}/shared/config/application.yml" do
+      mode 0644
+      owner deploy[:user]
+      group deploy[:group]
+      source "application.yml.erb"
+      variables(
+        env: OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables])
+        )
+      not_if { deploy[:environment_variables] == {} or deploy[:environment_variables] == nil }
+    end
+  end
 end
