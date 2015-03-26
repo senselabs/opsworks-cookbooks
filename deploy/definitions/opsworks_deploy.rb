@@ -101,6 +101,13 @@ define :opsworks_deploy do
         link_tempfiles_to_current_release
 
         if deploy[:application_type] == 'rails' or deploy.has_key?(:sidekiq)
+
+          if deploy.has_key?(:puma)
+            link "#{deploy[:deploy_to]}/shared/config/application.yml" do
+              to "#{release_path}/config/application.yml"
+            end
+          end
+
           if deploy[:auto_bundle_on_deploy]
             OpsWorks::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
           end
