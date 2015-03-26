@@ -103,8 +103,8 @@ define :opsworks_deploy do
         if deploy[:application_type] == 'rails' or deploy.has_key?(:sidekiq)
 
           if deploy.has_key?(:puma)
-            link "#{deploy[:deploy_to]}/shared/config/application.yml" do
-              to "#{release_path}/config/application.yml"
+            link "#{release_path}/config/application.yml" do
+              to "#{deploy[:deploy_to]}/shared/config/application.yml"
             end
           end
 
