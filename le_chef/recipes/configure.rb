@@ -28,7 +28,7 @@ else
     command(lazy do
               cmd = "le register"
               cmd += " --user-key #{le['account_key']}"
-              cmd += " --name='#{le['hostname']}'"
+              cmd += " --name='#{node[:opsworks][:stack][:name]} #{le['hostname']}'"
               cmd
             end)
 
