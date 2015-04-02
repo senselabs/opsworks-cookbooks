@@ -78,8 +78,10 @@ define :opsworks_deploy do
       symlinks(deploy[:symlinks]) unless deploy[:symlinks].nil?
       action deploy[:action]
 
-      if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:layers].include?('rails-app')
+      if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:layers].include?('rails-app') && !deploy.has_key?(:puma)
         restart_command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
+      elsif deploy.has_key(:puma)
+        restart_command "sleep #{deploy[:sleep_before_restart]} && service puma-#{application} restart"
       end
 
       case deploy[:scm][:scm_type].to_s
