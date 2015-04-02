@@ -80,11 +80,6 @@ define :opsworks_deploy do
 
       if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:layers].include?('rails-app') && !deploy.has_key?(:puma)
         restart_command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
-      elsif deploy.has_key?(:puma)
-        bash 'restart_puma' do
-          code "echo noop"
-          notifies :restart, "service[puma-#{application}]"
-        end
       end
 
       case deploy[:scm][:scm_type].to_s
