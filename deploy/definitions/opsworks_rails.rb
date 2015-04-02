@@ -44,7 +44,7 @@ define :opsworks_rails do
       )
 
     only_if do
-      deploy[:database][:host].present? and deploy.has_key?(:puma)
+      deploy.has_key?(:puma)
     end
   end
 
