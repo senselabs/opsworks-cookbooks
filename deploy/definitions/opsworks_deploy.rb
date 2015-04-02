@@ -106,6 +106,22 @@ define :opsworks_deploy do
             link "#{release_path}/config/application.yml" do
               to "#{deploy[:deploy_to]}/shared/config/application.yml"
             end
+
+            template "#{node[:deploy][application][:deploy_to]}/shared/config/database.yml" do
+              cookbook "rails"
+              source "database.yml.erb"
+              mode "0660"
+              owner node[:deploy][application][:user]
+              group node[:deploy][application][:group]
+              variables(
+                :database => node[:deploy][application][:database],
+                :environment => node[:deploy][application][:rails_env]
+              )
+
+              only_if do
+                deploy[:database][:host].present?
+              end
+            end
           end
 
           if deploy[:auto_bundle_on_deploy]
