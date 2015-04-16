@@ -51,29 +51,31 @@ node[:deploy].each do |application, deploy|
       )
     end
   else
-    release_path = ::File.join(deploy[:deploy_to], 'current')
+    unless node[:opsworks][:instance][:layers].include?('sidekiq')
+      release_path = ::File.join(deploy[:deploy_to], 'current')
 
-    template "setup puma.conf" do
-      path "/etc/init/puma-#{application}.conf"
-      source "puma.conf.erb"
-      owner "root"
-      group "root"
-      mode 0644
-      variables({
-        user: deploy[:user],
-        group: deploy[:group],
-        release_path: release_path
-      })
-    end
+      template "setup puma.conf" do
+        path "/etc/init/puma-#{application}.conf"
+        source "puma.conf.erb"
+        owner "root"
+        group "root"
+        mode 0644
+        variables({
+          user: deploy[:user],
+          group: deploy[:group],
+          release_path: release_path
+        })
+      end
 
-    service "puma-#{application}" do
-      provider Chef::Provider::Service::Upstart
-      supports stop: true, start: true, restart: true, status: true
-    end
+      service "puma-#{application}" do
+        provider Chef::Provider::Service::Upstart
+        supports stop: true, start: true, restart: true, status: true
+      end
 
-    bash 'restart_puma' do
-      code "echo noop"
-      notifies :restart, "service[puma-#{application}]"
+      bash 'restart_puma' do
+        code "echo noop"
+        notifies :restart, "service[puma-#{application}]"
+      end
     end
   end
 end
