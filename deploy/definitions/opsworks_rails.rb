@@ -19,18 +19,18 @@ define :opsworks_rails do
   # end
 
   # write out the environment variables
-  template "#{deploy[:deploy_to]}/shared/config/application.yml" do
-    cookbook "rails"
-    source "application.yml.erb"
-    mode "0660"
-    owner deploy[:user]
-    group deploy[:group]
-    variables(env: OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables]))
+  # template "#{deploy[:deploy_to]}/shared/config/application.yml" do
+  #   cookbook "rails"
+  #   source "application.yml.erb"
+  #   mode "0660"
+  #   owner deploy[:user]
+  #   group deploy[:group]
+  #   variables(env: OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables]))
 
-    only_if do
-      deploy.has_key?(:puma)
-    end
-  end
+  #   only_if do
+  #     deploy.has_key?(:puma)
+  #   end
+  # end
 
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
     cookbook "rails"
