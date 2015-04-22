@@ -28,7 +28,7 @@ define :opsworks_rails do
     variables(env: OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables]))
 
     only_if do
-      deploy.has_key?(:puma)
+      deploy.has_key?(:puma) && !deploy[:environment_variables].empty?
     end
   end
 
