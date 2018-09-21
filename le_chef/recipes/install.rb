@@ -3,8 +3,8 @@ if platform_family?('debian')
     uri          'http://rep.logentries.com/'
     distribution node['lsb']['codename']
     components   ['main']
-    keyserver    'pgp.mit.edu'
-    key          'C43C79AD'
+    keyserver    'keyserver.ubuntu.com'
+    key          'A5270289C43C79AD'
   end
 end
 
